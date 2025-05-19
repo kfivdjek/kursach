@@ -1,0 +1,90 @@
+using System;
+
+// Интерфейс автомобиля
+public interface ICar
+{
+    void GetDescription();
+}
+
+// Конкретные автомобили
+public class Sedan : ICar
+{
+    public void GetDescription()
+    {
+        Console.WriteLine("Автомобиль типа Седан.");
+    }
+}
+
+public class SUV : ICar
+{
+    public void GetDescription()
+    {
+        Console.WriteLine("Автомобиль типа Внедорожник.");
+    }
+}
+
+// Абстрактная фабрика
+public abstract class CarFactory
+{
+    public abstract ICar CreateCar();
+}
+
+// Конкретные фабрики
+public class ConcreteCarFactoryA : CarFactory
+{
+    public override ICar CreateCar()
+    {
+        return new Sedan();
+    }
+}
+
+public class ConcreteCarFactoryB : CarFactory
+{
+    public override ICar CreateCar()
+    {
+        return new SUV();
+    }
+}
+
+// Клиент
+public class Client
+{
+    private ICar _car;
+
+    public Client(CarFactory factory)
+    {
+        _car = factory.CreateCar();
+    }
+
+    public void Run()
+    {
+        _car.GetDescription();
+    }
+}
+
+// Главная программа
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Console.WriteLine("Выберите тип завода:");
+        Console.WriteLine("1 - Завод A (Седан)");
+        Console.WriteLine("2 - Завод B (Внедорожник)");
+        Console.Write("Ваш выбор: ");
+        string input = Console.ReadLine();
+
+        CarFactory factory;
+
+        if (input == "1")
+        {
+            factory = new ConcreteCarFactoryA();
+        }
+        else
+        {
+            factory = new ConcreteCarFactoryB();
+        }
+
+        var client = new Client(factory);
+        client.Run();
+    }
+}
